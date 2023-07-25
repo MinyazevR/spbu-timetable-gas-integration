@@ -15,5 +15,5 @@
 
 #### Для пользователей Andoid и IOS
 1. Проследовать инструкции для Google или Yandex Calendar (по желанию).
-2. Если Вы выбрали Google:  добавьте в настройки календаря свой google account.
+2. Если Вы выбрали Google:  добавьте в настройках календаря свой google account.
 3. Если Вы выбрали Yandex: [проследуйте инструкции](https://yandex.ru/support/calendar/common/sync/sync-mobile.html).
