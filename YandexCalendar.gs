@@ -1,11 +1,13 @@
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Ссылка на исходник скрипта: https://script.google.com/d/1sHXpwgmHZTU2e77Le349Sfx5GCYWBMDQH8OegJXsLu49PeIZIJemXNb0/edit?usp=sharing
+
 // Вставьте сюда свой id с timetable(Ваш id --- 2690, можно не менять)
 var timetableId = '2690'
 
 // Не знаю, насколько разумно не скрывать client_id, но его наличие не дает возможности получения токенов доступа или получения токенов, выданных когда-либо этому client_id
 var clientID = 'ddb39de3ae3340c5a4ef5f1666e24099'
 
-// Перейдите по ссылке https://oauth.yandex.ru/authorize?response_type=token&client_id=ddb39de3ae3340c5a4ef5f1666e24099 и скопируйте свой access token
+// Перейдите по ссылке https://oauth.yandex.ru/authorize?response_type=token&client_id=ddb39de3ae3340c5a4ef5f1666e24099 и скопируйте свой access token в строке запроса
 
 // Вставьте сюда свой access token
 var token = ''
