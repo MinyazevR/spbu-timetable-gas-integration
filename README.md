@@ -7,11 +7,15 @@
 #### Почему Google Apps Script
 После того как пользователь пройдет авторизацию и даст доступ к своим календарям, появляется необходимость хранить refresh token и другие данные для всех пользователей в бд, в связи с чем появляются определенные риски. Google Apps Script предоставляет доступ к сервисам Google (к Google Calendar), минуя эти риски.
 
-#### Для пользователей Google и Yandex Calendar
+#### Для пользователей Google Calendar
 1. [Перейти по ссылке](https://script.google.com/d/1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS/edit?usp=sharing).
 2. Скопировать проект (слева во вкладке "Общие сведения").
-3. Для Google: проследовать инструкции в GoogleCalendar.gs.
-4. Для Yandex: проследовать инструкции в YandexCalendar.gs.
+3. Проследовать инструкции в GoogleCalendar.gs.
+
+#### Для пользователей Yandex Calendar
+1. [Перейти по ссылке](https://script.google.com/d/1sHXpwgmHZTU2e77Le349Sfx5GCYWBMDQH8OegJXsLu49PeIZIJemXNb0/edit?usp=sharing)
+2. Скопировать проект (слева во вкладке "Общие сведения").
+3. Проследовать инструкции в YandexCalendar.gs.
 
 #### Для пользователей Andoid и IOS
 1. Проследовать инструкции для Google или Yandex Calendar (по желанию).
