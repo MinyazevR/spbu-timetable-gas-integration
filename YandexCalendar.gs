@@ -3,9 +3,9 @@
 var timetableId = '2690'
 
 // CleintID
-var clientID = '5dbc2acdce41410ca5e386d2989dce11'
+var clientID = 'ddb39de3ae3340c5a4ef5f1666e24099'
 
-// Перейдите по ссылке https://oauth.yandex.ru/authorize?response_type=token&client_id=5dbc2acdce41410ca5e386d2989dce11 и скопируйте свой access token
+// Перейдите по ссылке https://oauth.yandex.ru/authorize?response_type=token&client_id=ddb39de3ae3340c5a4ef5f1666e24099 и скопируйте свой access token
 
 // Вставьте сюда свой access token
 var token = ''
