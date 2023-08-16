@@ -1,14 +1,14 @@
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Ссылка на исходник скрипта: https://script.google.com/d/1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS/edit?usp=sharing
 
-// Вставьте сюда свой id с timetable(Ваш id --- 2690, можно не менять)
-var timetableId = '2690'
+// Вставьте сюда свой id(id преподавателя или группы) с timetable(Ваш id --- 2690, можно не менять)
+var timetableId = '1111'
 
-// Csv файл с расписанием с февраля 2023(который будет на автокоммите)
-var actualCsvUrl = 'https://raw.githubusercontent.com/MinyazevR/timetable/main/CSV/SpecialEvents.csv'
+// Если вы получаете расписание преподавателя, укажите USERTYPE = 'educators', иначе смените USERTYPE = 'groups'
+var USERTYPE = 'educators' 
 
 // Создайте новый гугл календарь и поместите сюда его идентификатор вида (его можно получить в гугл календаре в "Настройка и общий доступ")
-var calendarIdentificator = '*****************************@group.calendar.google.com'
+var calendarIdentificator = '***********************************@group.calendar.google.com'
 
 // ВЫПОЛНИТЕ ФУНКЦИЮ createTimeTrigger() (запуск каждые 6 часов). Если Вы хотите настроить частоту выполнения сами, можно это сделать в панели слева(вкладка триггеры) 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -46,26 +46,23 @@ function handler(requests) {
 
 
 function getTimetableEvents() {
-  var res = UrlFetchApp.fetch(actualCsvUrl)
-  var csvraw = res.getContentText()
-  var csv = Utilities.parseCsv(csvraw)
-
   // выгружаться будет с текущего момента(будет просто new Date()) и на месяц вперед, но так как пока за последний месяц выгружать нечего, то с февраля
-  var fakeNow = new Date('2023-02-13 00:00:00')
+  var now = new Date()
+  nowStr = now.toISOString().slice(0, 10)
 
-  // Получаем нужную выборку (нужный id + последний месяц)
-  var userEventsForLastMonth = csv.filter(item => item[0] == timetableId && (new Date(item[2])) >= fakeNow)
+  // Получаем дату 30+ дней
+  var rightDate = new Date(now)
+  rightDate.setDate(rightDate.getDate() + 30)
+  rightDateStr = rightDate.toISOString().slice(0, 10)
+
+  var res = UrlFetchApp.fetch(`https://timetable.spbu.ru/api/v1/${USERTYPE}/${timetableId}/events/${nowStr}/${rightDateStr}`)
+  var dct = JSON.parse(res);
 
   // Получаем календарь
   var calendar = CalendarApp.getCalendarById(calendarIdentificator)
 
-  // Получаем дату 30+ дней
-  var now = new Date()
-  var rightDate = new Date(now)
-  rightDate.setDate(rightDate.getDate() + 30)
-
-  // Получаем события за последний месяц(на данный момент с февраля, так как за посл месяц ничего не было)
-  var requests = calendar.getEvents(fakeNow, rightDate).map(event => (
+  // Получаем события за последний месяц
+  var requests = calendar.getEvents(now, rightDate).map(event => (
     {url: `https://www.googleapis.com/calendar/v3/calendars/${calendarIdentificator}/events/${event.getId().replace("@google.com", "")}`,
     headers: {Authorization: "Bearer " + ScriptApp.getOAuthToken()}, 
     method: "DELETE"}))
@@ -78,33 +75,49 @@ function getTimetableEvents() {
 
   var postRequests = []
 
-  // Добавляем обновленные события за последний месяц
-  for (let i = 0; i < userEventsForLastMonth.length ; i++) {
-    var text = userEventsForLastMonth[i][5]
-    var start_time = userEventsForLastMonth[i][2]
-    var end_time = userEventsForLastMonth[i][3]
-    var location = userEventsForLastMonth[i][4]
-    var description = userEventsForLastMonth[i][6]
-    var formData = {
-    "summary": text,
-    "description": description,
-    "location": location,
-    "start": {
-      "dateTime": new Date(start_time),
-    },
-    "end": {
-      "dateTime": new Date(end_time),
-    }}
+  var events_days = (USERTYPE == 'educator') ? dct['EducatorEventsDays'] : dct['Days']
 
-    var paramsForPost = {
+  events_days.forEach(event => {
+    var day_study_events = event['DayStudyEvents']
+    day_study_events.forEach(day_event => {
+      var start = day_event['Start']
+      var startDate = new Date(start)
+      var end = day_event['End']
+      var endDate = new Date(end)
+      var subject = day_event['Subject']
+      var location = day_event['LocationsDisplayText']
+      var groups_or_educator_names = (USERTYPE == 'educator') ? day_event['ContingentUnitName'] : day_event['EducatorsDisplayText']
+      var is_cancelled = day_event['IsCancelled']
+      var is_assigned = day_study_events['IsAssigned']
+      var time_was_changed = day_study_events['TimeWasChanged']
+      if (groups_or_educator_names == "Нет"){
+        is_cancelled = true
+      }
+      if (is_cancelled){
+        return
+      }
+
+      var formData = {
+      "summary": subject,
+      "description": groups_or_educator_names,
+      "location": location,
+      "start": {
+      "dateTime": startDate,
+      },
+      "end": {
+        "dateTime": endDate,
+      }}
+
+      var paramsForPost = {
       url: `https://www.googleapis.com/calendar/v3/calendars/${calendarIdentificator}/events`,
       headers: {Authorization: "Bearer " + ScriptApp.getOAuthToken()}, 
       muteHttpExceptions: true,
       method:"POST",
       payload: JSON.stringify(formData)};
 
-    postRequests.push(paramsForPost)
-  }
+      postRequests.push(paramsForPost)
+    })
+  })
 
   handler(postRequests)
 
