@@ -1,14 +1,14 @@
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Ссылка на исходник скрипта: https://script.google.com/d/1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS/edit?usp=sharing
 
-// Вставьте сюда свой id(id преподавателя или группы) с timetable(Ваш id --- 2690, можно не менять)
-var timetableId = '1111'
+// Вставьте сюда свой id(id преподавателя или группы)
+var timetableId = '334758'
 
 // Если вы получаете расписание преподавателя, укажите USERTYPE = 'educators', иначе смените USERTYPE = 'groups'
-var USERTYPE = 'educators' 
+var USERTYPE = 'groups' 
 
 // Создайте новый гугл календарь и поместите сюда его идентификатор вида (его можно получить в гугл календаре в "Настройка и общий доступ")
-var calendarIdentificator = '***********************************@group.calendar.google.com'
+var calendarIdentificator = '*************************************@group.calendar.google.com'
 
 // ВЫПОЛНИТЕ ФУНКЦИЮ createTimeTrigger() (запуск каждые 6 часов). Если Вы хотите настроить частоту выполнения сами, можно это сделать в панели слева(вкладка триггеры) 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ function handler(requests) {
 
 
 function getTimetableEvents() {
-  // выгружаться будет с текущего момента(будет просто new Date()) и на месяц вперед, но так как пока за последний месяц выгружать нечего, то с февраля
+  // выгружаться будет с текущего момента и на месяц вперед
   var now = new Date()
   nowStr = now.toISOString().slice(0, 10)
 
@@ -75,7 +75,7 @@ function getTimetableEvents() {
 
   var postRequests = []
 
-  var events_days = (USERTYPE == 'educator') ? dct['EducatorEventsDays'] : dct['Days']
+  var events_days = (USERTYPE == 'educators') ? dct['EducatorEventsDays'] : dct['Days']
 
   events_days.forEach(event => {
     var day_study_events = event['DayStudyEvents']
@@ -86,7 +86,7 @@ function getTimetableEvents() {
       var endDate = new Date(end)
       var subject = day_event['Subject']
       var location = day_event['LocationsDisplayText']
-      var groups_or_educator_names = (USERTYPE == 'educator') ? day_event['ContingentUnitName'] : day_event['EducatorsDisplayText']
+      var groups_or_educator_names = (USERTYPE == 'educators') ? day_event['ContingentUnitName'] : day_event['EducatorsDisplayText']
       var is_cancelled = day_event['IsCancelled']
       var is_assigned = day_study_events['IsAssigned']
       var time_was_changed = day_study_events['TimeWasChanged']
