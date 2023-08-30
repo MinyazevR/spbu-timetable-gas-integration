@@ -1,4 +1,4 @@
-# spbu-timetable-gas-integration
+# spbu-timetable-integration
 Интеграция расписания СПБГУ в Google Calendar при помощи Google Apps Script, с возможностью использования на Android и IOS устройствах.
 
 #### Для чего это нужно
