@@ -1,6 +1,10 @@
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Ссылка на исходник скрипта: https://script.google.com/d/1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS/edit?usp=sharing
 
+// github: https://github.com/MinyazevR/spbu-timetable-gas-integration
+
+// Жалобы и вопросы можно писать в tg: https://t.me/Rerrrrwww, st094172@student.spbu.ru или открыть issue в https://github.com/MinyazevR/spbu-timetable-gas-integration
+
 // Вставьте сюда свой id(id преподавателя или группы)
 var timetableId = '334758'
 
