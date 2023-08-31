@@ -14,14 +14,34 @@ var USERTYPE = 'groups'
 // Создайте новый гугл календарь и поместите сюда его идентификатор вида (его можно получить в гугл календаре в "Настройка и общий доступ")
 var calendarIdentificator = '*************************************@group.calendar.google.com'
 
-// ВЫПОЛНИТЕ ФУНКЦИЮ createTimeTrigger() (запуск каждые 6 часов). Если Вы хотите настроить частоту выполнения сами, можно это сделать в панели слева(вкладка триггеры) 
+// ВЫПОЛНИТЕ ФУНКЦИЮ init() (запуск каждые 6 часов). 
+// Если Вы хотите настроить частоту выполнения сами, можно это сделать в панели слева(вкладка триггеры), но в этом случае вместо init() выполните функцию setProperty().
+// Если Вы выполнили init() НЕ надо выполнять setProperty().
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function init() {
+  setProperty()
+  createTimeTrigger()
+}
 
 function createTimeTrigger() {
   ScriptApp.newTrigger('getTimetableEvents')
         .timeBased()
         .everyHours(6)
         .create()
+}
+
+function getLatestVersion() {
+  var res = UrlFetchApp.fetch('https://raw.githubusercontent.com/MinyazevR/spbu-timetable-gas-integration/main/versions.json')
+  var dct = JSON.parse(res);
+  var version = dct["versions"][0]['versionNumber']
+  return version
+}
+
+function setProperty() {
+  var version = getLatestVersion()
+  var userProperties = PropertiesService.getScriptProperties();
+  userProperties.setProperties({version: version});
 }
 
 function handler(requests) {
@@ -48,25 +68,33 @@ function handler(requests) {
   }
 }
 
+function getCurrentVersion() {
+  var scriptProperties = PropertiesService.getScriptProperties();
+  return scriptProperties.getProperty('version')
+  
+}
 
 function getTimetableEvents() {
-  // выгружаться будет с текущего момента и на месяц вперед
   var now = new Date()
-  nowStr = now.toISOString().slice(0, 10)
 
   // Получаем дату 30+ дней
   var rightDate = new Date(now)
   rightDate.setDate(rightDate.getDate() + 30)
   rightDateStr = rightDate.toISOString().slice(0, 10)
 
-  var res = UrlFetchApp.fetch(`https://timetable.spbu.ru/api/v1/${USERTYPE}/${timetableId}/events/${nowStr}/${rightDateStr}`)
+  // Получаем дату -1 день
+  var leftDate = new Date(now)
+  leftDate.setDate(leftDate.getDate() - 1)
+  leftDateStr = leftDate.toISOString().slice(0, 10)
+
+  var res = UrlFetchApp.fetch(`https://timetable.spbu.ru/api/v1/${USERTYPE}/${timetableId}/events/${leftDateStr}/${rightDateStr}`)
   var dct = JSON.parse(res);
 
   // Получаем календарь
   var calendar = CalendarApp.getCalendarById(calendarIdentificator)
 
   // Получаем события за последний месяц
-  var requests = calendar.getEvents(now, rightDate).map(event => (
+  var requests = calendar.getEvents(leftDate, rightDate).map(event => (
     {url: `https://www.googleapis.com/calendar/v3/calendars/${calendarIdentificator}/events/${event.getId().replace("@google.com", "")}`,
     headers: {Authorization: "Bearer " + ScriptApp.getOAuthToken()}, 
     method: "DELETE"}))
@@ -122,6 +150,12 @@ function getTimetableEvents() {
       postRequests.push(paramsForPost)
     })
   })
+
+  var version = getLatestVersion()
+  var currentVersion = getCurrentVersion()
+  if (currentVersion != version) {
+    calendar.createAllDayEvent('Please, Update Script', now);
+  }
 
   handler(postRequests)
 
