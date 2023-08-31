@@ -14,13 +14,13 @@ var USERTYPE = 'groups'
 // Создайте новый гугл календарь и поместите сюда его идентификатор вида (его можно получить в гугл календаре в "Настройка и общий доступ")
 var calendarIdentificator = '*************************************@group.calendar.google.com'
 
-// ВЫПОЛНИТЕ ФУНКЦИЮ init() (запуск каждые 6 часов). 
-// Если Вы хотите настроить частоту выполнения сами, можно это сделать в панели слева(вкладка триггеры), но в этом случае вместо init() выполните функцию setProperty().
-// Если Вы выполнили init() НЕ надо выполнять setProperty().
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// НЕ менять это значение
+var VERSION = 1.0
 
+// ВЫПОЛНИТЕ ФУНКЦИЮ init() (запуск каждые 6 часов).
+// Если Вы хотите настроить частоту выполнения сами, можно это сделать в панели слева(вкладка триггеры).
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function init() {
-  setProperty()
   createTimeTrigger()
 }
 
@@ -36,12 +36,6 @@ function getLatestVersion() {
   var dct = JSON.parse(res);
   var version = dct["versions"][0]['versionNumber']
   return version
-}
-
-function setProperty() {
-  var version = getLatestVersion()
-  var userProperties = PropertiesService.getScriptProperties();
-  userProperties.setProperties({version: version});
 }
 
 function handler(requests) {
@@ -69,9 +63,7 @@ function handler(requests) {
 }
 
 function getCurrentVersion() {
-  var scriptProperties = PropertiesService.getScriptProperties();
-  return scriptProperties.getProperty('version')
-  
+  return VERSION
 }
 
 function getTimetableEvents() {
@@ -155,6 +147,7 @@ function getTimetableEvents() {
   var currentVersion = getCurrentVersion()
   if (currentVersion != version) {
     calendar.createAllDayEvent('Please, Update Script', now);
+    Logger.log("Пожалуйста, обновите скрипт")
   }
 
   handler(postRequests)
