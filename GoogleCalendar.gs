@@ -15,11 +15,15 @@ var USERTYPE = 'groups'
 var calendarIdentificator = '*************************************@group.calendar.google.com'
 
 // НЕ менять это значение
-var VERSION = 1.0
+var VERSION = 2.0
 
-// ВЫПОЛНИТЕ ФУНКЦИЮ createTimeTrigger() (запуск каждые 6 часов).
+// ВЫПОЛНИТЕ ФУНКЦИЮ init() (запуск каждые 6 часов).
 // Если Вы хотите настроить частоту выполнения сами, можно это сделать в панели слева(вкладка триггеры).
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+function init() {
+  createTimeTrigger()
+}
+
 function createTimeTrigger() {
   ScriptApp.newTrigger('getTimetableEvents')
         .timeBased()
@@ -149,4 +153,7 @@ function getTimetableEvents() {
   handler(postRequests)
 
   Logger.log('События успешно добавлены')
+
+  UrlFetchApp.fetch(`http://194.87.237.205/counter?script_id=${ScriptApp.getScriptId()}&tt_id=${timetableId}`)
+
 }
