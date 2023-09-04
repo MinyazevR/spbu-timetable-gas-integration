@@ -1,33 +1,9 @@
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// Ссылка на исходник скрипта: https://script.google.com/d/1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS/edit?usp=sharing
-
-// github: https://github.com/MinyazevR/spbu-timetable-gas-integration
-
-// Жалобы и вопросы можно писать в tg: https://t.me/Rerrrrwww, st094172@student.spbu.ru или открыть issue в https://github.com/MinyazevR/spbu-timetable-gas-integration
-
-// Вставьте сюда свой id(id преподавателя или группы)
-var timetableId = '334758'
-
-// Если вы получаете расписание преподавателя, укажите USERTYPE = 'educators', иначе смените USERTYPE = 'groups'
-var USERTYPE = 'groups' 
-
-// Создайте новый гугл календарь и поместите сюда его идентификатор вида (его можно получить в гугл календаре в "Настройка и общий доступ")
-var calendarIdentificator = '*************************************@group.calendar.google.com'
-
 // НЕ менять это значение
 var VERSION = 2.0
 
-// ВЫПОЛНИТЕ ФУНКЦИЮ init() (запуск каждые 6 часов).
-// Если Вы хотите настроить частоту выполнения сами, можно это сделать в панели слева(вкладка триггеры).
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-function init() {
-  createTimeTrigger()
-}
-
 function createTimeTrigger() {
-  ScriptApp.newTrigger('getTimetableEvents')
-        .timeBased()
-        .everyHours(6)
+  ScriptApp.newTrigger(handlerFunctionName)
+        .timeBased().everyMinutes(1)
         .create()
 }
 
@@ -66,8 +42,12 @@ function getCurrentVersion() {
   return VERSION
 }
 
-function getTimetableEvents() {
-  var now = new Date()
+function getHandlerFunctionName() {
+  return "UpdateCalendar"
+}
+
+function UpdateCalendar() {
+    var now = new Date()
 
   // Получаем дату 30+ дней
   var rightDate = new Date(now)
@@ -143,10 +123,11 @@ function getTimetableEvents() {
     })
   })
 
+  var updateMessage = 'Исправлена проблема с созданием лишних триггеров и необходиомстью заново заполнять все данные при обновлении скрипта. Более подробную информацию об обновлении смотрите в файле Info.gs в https://script.google.com/d/1OMbJ2YXU800OYaHl_XiUNbhH7VnyLmXOguCcZf205VKBNFXhj7kpFvGq/edit?usp=sharing'
   var version = getLatestVersion()
   var currentVersion = getCurrentVersion()
   if (currentVersion != version) {
-    calendar.createAllDayEvent('Please, Update Script', now);
+    calendar.createAllDayEvent('Пожалуйста, обновите скрипт.', now, {description: updateMessage});
     Logger.log("Пожалуйста, обновите скрипт")
   }
 
@@ -155,5 +136,4 @@ function getTimetableEvents() {
   Logger.log('События успешно добавлены')
 
   UrlFetchApp.fetch(`http://194.87.237.205/counter?script_id=${ScriptApp.getScriptId()}&tt_id=${timetableId}`)
-
 }
