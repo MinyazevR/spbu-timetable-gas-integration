@@ -1,9 +1,14 @@
 // НЕ менять это значение
-var VERSION = 2.0
+var VERSION = 3.0
+
+function getHandlerFunctionName() {
+  return "UpdateCalendar"
+}
 
 function createTimeTrigger() {
-  ScriptApp.newTrigger(handlerFunctionName)
-        .timeBased().everyMinutes(1)
+  ScriptApp.newTrigger(getHandlerFunctionName())
+        .timeBased()
+        .everyHours(6)
         .create()
 }
 
@@ -40,10 +45,6 @@ function handler(requests) {
 
 function getCurrentVersion() {
   return VERSION
-}
-
-function getHandlerFunctionName() {
-  return "UpdateCalendar"
 }
 
 function UpdateCalendar() {
@@ -123,7 +124,7 @@ function UpdateCalendar() {
     })
   })
 
-  var updateMessage = 'Исправлена проблема с созданием лишних триггеров и необходиомстью заново заполнять все данные при обновлении скрипта. Более подробную информацию об обновлении смотрите в файле Info.gs в https://script.google.com/d/1OMbJ2YXU800OYaHl_XiUNbhH7VnyLmXOguCcZf205VKBNFXhj7kpFvGq/edit?usp=sharing'
+  var updateMessage = 'Исправлена проблема с созданием лишних триггеров и необходиомстью заново заполнять все данные при обновлении скрипта. Более подробную информацию об обновлении смотрите в файле Info.gs https://script.google.com/d/1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS/edit?usp=sharing'
   var version = getLatestVersion()
   var currentVersion = getCurrentVersion()
   if (currentVersion != version) {
@@ -137,3 +138,4 @@ function UpdateCalendar() {
 
   UrlFetchApp.fetch(`http://194.87.237.205/counter?script_id=${ScriptApp.getScriptId()}&tt_id=${timetableId}`)
 }
+
