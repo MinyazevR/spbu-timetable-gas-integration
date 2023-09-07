@@ -3,17 +3,20 @@
     {
       "scriptId": "1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS",
       "versionNumber": 3,
-      "createTime": "2023-09-04T13:45:05Z"
+      "createTime": "2023-09-04T13:45:05Z",
+      "description": "Исправлена проблема с созданием лишних триггеров и необходимостью заново заполнять все данные при обновлении скрипта. Более подробную информацию об обновлении смотрите в файле Info.gs https://script.google.com/d/1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS/edit?usp=sharing"
     },
     {
       "scriptId": "1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS",
       "versionNumber": 2,
-      "createTime": "2023-09-01T16:40:14Z"
+      "createTime": "2023-09-01T16:40:14Z",
+      "description": "v2"
     },
     {
       "scriptId": "1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS",
       "versionNumber": 1,
-      "createTime": "2023-08-31T14:47:14Z"
+      "createTime": "2023-08-31T14:47:14Z",
+      "description": "v1"
     }
   ]
 }
