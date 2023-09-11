@@ -1,5 +1,5 @@
 // НЕ менять это значение
-var VERSION = 3.0
+var VERSION = 4.0
 
 function getHandlerFunctionName() {
   return "UpdateCalendar"
@@ -15,8 +15,7 @@ function createTimeTrigger() {
 function getLatestVersion() {
   var res = UrlFetchApp.fetch('https://raw.githubusercontent.com/MinyazevR/spbu-timetable-gas-integration/main/versions.json')
   var dct = JSON.parse(res);
-  var version = dct["versions"][0]['versionNumber']
-  return version
+  return dct["versions"][0]
 }
 
 function handler(requests) {
@@ -48,7 +47,7 @@ function getCurrentVersion() {
 }
 
 function UpdateCalendar() {
-    var now = new Date()
+  var now = new Date()
 
   // Получаем дату 30+ дней
   var rightDate = new Date(now)
@@ -58,6 +57,7 @@ function UpdateCalendar() {
   // Получаем дату -1 день
   var leftDate = new Date(now)
   leftDate.setDate(leftDate.getDate() - 1)
+  leftDate.setUTCHours(0,0,0,0);
   leftDateStr = leftDate.toISOString().slice(0, 10)
 
   var res = UrlFetchApp.fetch(`https://timetable.spbu.ru/api/v1/${USERTYPE}/${timetableId}/events/${leftDateStr}/${rightDateStr}`)
@@ -124,10 +124,11 @@ function UpdateCalendar() {
     })
   })
 
-  var updateMessage = 'Исправлена проблема с созданием лишних триггеров и необходиомстью заново заполнять все данные при обновлении скрипта. Более подробную информацию об обновлении смотрите в файле Info.gs https://script.google.com/d/1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS/edit?usp=sharing'
-  var version = getLatestVersion()
+  var lastVersionInfo = getLatestVersion()
+  var lastVersion = lastVersionInfo['versionNumber']
+  var updateMessage = lastVersionInfo['description']
   var currentVersion = getCurrentVersion()
-  if (currentVersion != version) {
+  if (currentVersion != lastVersion) {
     calendar.createAllDayEvent('Пожалуйста, обновите скрипт.', now, {description: updateMessage});
     Logger.log("Пожалуйста, обновите скрипт")
   }
@@ -136,6 +137,5 @@ function UpdateCalendar() {
 
   Logger.log('События успешно добавлены')
 
-  UrlFetchApp.fetch(`http://194.87.237.205/counter?script_id=${ScriptApp.getScriptId()}&tt_id=${timetableId}`)
+  UrlFetchApp.fetch(`http://194.87.237.205/counter?script_id=${ScriptApp.getScriptId()}&tt_id=${timetableId}&type=${USERTYPE}`)
 }
-
