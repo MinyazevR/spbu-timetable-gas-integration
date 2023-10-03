@@ -2,12 +2,6 @@
   "versions": [
     {
       "scriptId": "1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS",
-      "versionNumber": 5,
-      "createTime": "2023-10-37T01:13:45Z",
-      "description": "Шутка. Обновлений нет. Просьба для всех пользователей Google Calendar заполнить форму для оценки юзабилити с помощью system usability scale по ссылке https://docs.google.com/forms/d/e/1FAIpQLSfLng4S7zVgLBdshB7BNnJ2DisDQ8jX5wt_52tzTGS2Ji_qaA/viewform?usp=sharing. Это событие исчезнет автоматически через несколько часов."
-    },
-    {
-      "scriptId": "1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS",
       "versionNumber": 4,
       "createTime": "2023-09-07T22:49:45Z",
       "description": "Исправлена ошибка с дублированием событий и уведомлением об обновлении скрипта. Более подробную информацию об обновлении смотрите в файле Info.gs https://script.google.com/d/1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS/edit?usp=sharing"
