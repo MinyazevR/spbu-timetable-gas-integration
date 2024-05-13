@@ -2,6 +2,12 @@
   "versions": [
     {
       "scriptId": "1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS",
+      "versionNumber": 5,
+      "createTime": "2024-05-13T16:25:24Z",
+      "description": "Исправлен баг с обработкой ошибок, текущие события не будут удаляться при недоступности сервисов, используемых для получения расписания. Более подробную информацию об обновлении смотрите в файле Info.gs https://script.google.com/d/1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS/edit?usp=sharing"
+    },
+    {
+      "scriptId": "1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS",
       "versionNumber": 4,
       "createTime": "2023-09-07T22:49:45Z",
       "description": "Исправлена ошибка с дублированием событий и уведомлением об обновлении скрипта. Более подробную информацию об обновлении смотрите в файле Info.gs https://script.google.com/d/1Vos3LjIA47jzbv6A6SKkvc-N-Us-_iWMWJvrRUEBI7wfXhjC-J7Wt5sS/edit?usp=sharing"
